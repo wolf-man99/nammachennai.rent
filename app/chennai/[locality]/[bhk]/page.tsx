@@ -112,15 +112,15 @@ export default async function BhkPage({
 
           <div className="relative">
             <nav className="mb-8 flex items-center gap-2 text-xs text-white/40" aria-label="Breadcrumb">
-              <Link href="/" className="transition-colors hover:text-white">Chennai.rent</Link>
+              <Link href="/" className="tap inline-block transition-colors hover:text-white">Chennai.rent</Link>
               <span>/</span>
-              <Link href={`/chennai/${area.slug}`} className="transition-colors hover:text-white">{area.name}</Link>
+              <Link href={`/chennai/${area.slug}`} className="tap inline-block transition-colors hover:text-white">{area.name}</Link>
               <span>/</span>
               <span className="text-white/70">{label}</span>
             </nav>
 
             <Eyebrow className="text-owner">{label} rent</Eyebrow>
-            <h1 className="mt-5 max-w-3xl text-headline font-semibold uppercase">
+            <h1 className="mt-5 max-w-3xl text-headline font-semibold uppercase break-words">
               {label} in {area.name}
             </h1>
 

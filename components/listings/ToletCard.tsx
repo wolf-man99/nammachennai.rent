@@ -69,7 +69,7 @@ export function ToletCard({ report }: { report: PublicToletReport }) {
 
         <div className="mt-5 flex items-center justify-between border-t border-line pt-4 text-xs text-faint">
           {report.locality ? (
-            <Link href={`/chennai/${report.locality.slug}`} className="hover:text-ink">
+            <Link href={`/chennai/${report.locality.slug}`} className="tap inline-block hover:text-ink">
               {report.locality.name} rent data
             </Link>
           ) : (

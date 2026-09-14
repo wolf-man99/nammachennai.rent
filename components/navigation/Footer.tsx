@@ -51,7 +51,7 @@ export function Footer() {
                 <ul className="space-y-2.5">
                   {col.links.map((l) => (
                     <li key={l.href}>
-                      <Link href={l.href} className="text-sm text-white/70 transition-colors hover:text-owner">
+                      <Link href={l.href} className="tap inline-block text-sm text-white/70 transition-colors hover:text-owner">
                         {l.label}
                       </Link>
                     </li>
@@ -69,7 +69,7 @@ export function Footer() {
               <Link
                 key={z.slug}
                 href={`/chennai/${z.slug}`}
-                className="rounded-pill border border-white/15 px-3.5 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-owner hover:text-owner"
+                className="rounded-pill border border-white/15 px-4 py-2.5 text-xs font-medium text-white/70 transition-colors hover:border-owner hover:text-owner"
               >
                 {z.name}
               </Link>

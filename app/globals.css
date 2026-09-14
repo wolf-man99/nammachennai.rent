@@ -162,6 +162,21 @@
     box-shadow: 0 0 0 3px rgb(20 20 20 / 0.08);
   }
 
+  /*
+   * Expands a control's hit area to a comfortable ~44px without changing how it
+   * looks or how it sits in the layout. For small inline links - breadcrumbs,
+   * footer links, text buttons - where the visual size is correct but the tap
+   * target is not.
+   */
+  .tap {
+    position: relative;
+  }
+  .tap::after {
+    content: '';
+    position: absolute;
+    inset: -12px -10px;
+  }
+
   .hide-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -246,6 +261,15 @@
   border: 1px solid var(--color-line) !important;
   box-shadow: none !important;
   overflow: hidden;
+}
+
+/* The library's default 29px controls are below a comfortable touch target. */
+.maplibregl-ctrl-group button {
+  width: 42px !important;
+  height: 42px !important;
+}
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  background-size: 20px 20px;
 }
 .maplibregl-popup-content {
   padding: 0 !important;

@@ -85,13 +85,13 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
 
       <Container className="pt-6 lg:pt-10">
         <nav className="mb-7 flex flex-wrap items-center gap-2 text-xs text-faint" aria-label="Breadcrumb">
-          <Link href="/" className="transition-colors hover:text-ink">Chennai.rent</Link>
+          <Link href="/" className="tap inline-block transition-colors hover:text-ink">Chennai.rent</Link>
           <span>/</span>
-          <Link href="/listings" className="transition-colors hover:text-ink">Homes</Link>
+          <Link href="/listings" className="tap inline-block transition-colors hover:text-ink">Homes</Link>
           <span>/</span>
           {listing.locality ? (
             <>
-              <Link href={`/chennai/${listing.locality.slug}`} className="transition-colors hover:text-ink">
+              <Link href={`/chennai/${listing.locality.slug}`} className="tap inline-block transition-colors hover:text-ink">
                 {place}
               </Link>
               <span>/</span>
@@ -112,7 +112,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
               <span className="text-xs text-faint">Listed {relativeTime(listing.created_at)}</span>
             </div>
 
-            <h1 className="mt-5 text-headline font-semibold uppercase tracking-tight">
+            <h1 className="mt-5 text-headline font-semibold uppercase tracking-tight break-words">
               {label}
               <br />
               {place}

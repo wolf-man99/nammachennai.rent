@@ -166,7 +166,7 @@ function FilterChip({ href, active, children }: { href: string; active: boolean;
     <Link
       href={href}
       scroll={false}
-      className={`rounded-pill border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+      className={`rounded-pill border px-4 py-2.5 text-sm font-medium transition-colors ${
         active ? 'border-ink bg-ink text-white' : 'border-line-strong text-muted hover:border-ink hover:text-ink'
       }`}
     >

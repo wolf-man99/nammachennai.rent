@@ -77,7 +77,7 @@ export default async function ExplorePage({
           <Link
             key={z.slug}
             href={`/chennai/${z.slug}`}
-            className="rounded-pill border border-line-strong bg-surface px-4 py-2 text-sm font-medium transition-colors hover:border-ink"
+            className="rounded-pill border border-line-strong bg-surface px-4 py-2.5 text-sm font-medium transition-colors hover:border-ink"
           >
             {z.name}
           </Link>

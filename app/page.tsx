@@ -98,7 +98,7 @@ export default async function HomePage() {
                   <Link
                     key={e}
                     href={`/explore?q=${encodeURIComponent(e)}`}
-                    className="rounded-pill border border-white/15 px-3 py-1.5 text-xs font-medium text-white/70 transition-colors hover:border-owner hover:text-owner"
+                    className="rounded-pill border border-white/15 px-4 py-2.5 text-xs font-medium text-white/70 transition-colors hover:border-owner hover:text-owner"
                   >
                     {e}
                   </Link>

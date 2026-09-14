@@ -151,7 +151,7 @@ export function MapExplorer({ summaries }: { summaries: MapLocalitySummary[] }) 
                       prev.includes(k.key) ? prev.filter((x) => x !== k.key) : [...prev, k.key],
                     );
                   }}
-                  className={`inline-flex items-center gap-2 rounded-pill px-3.5 py-2 text-xs font-semibold tracking-tight transition-colors sm:text-sm ${
+                  className={`inline-flex min-h-[40px] items-center gap-2 rounded-pill px-3.5 py-2 text-xs font-semibold tracking-tight transition-colors sm:text-sm ${
                     active ? 'bg-ink text-white' : 'text-muted hover:bg-ground'
                   }`}
                 >
@@ -228,7 +228,7 @@ export function MapExplorer({ summaries }: { summaries: MapLocalitySummary[] }) 
                           filterUsed('maxRent');
                           setMaxRent(maxRent === step ? null : step);
                         }}
-                        className={`rounded-pill border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                        className={`rounded-pill border px-4 py-2.5 text-xs font-medium transition-colors ${
                           maxRent === step
                             ? 'border-ink bg-ink text-white'
                             : 'border-line-strong text-muted hover:border-ink hover:text-ink'

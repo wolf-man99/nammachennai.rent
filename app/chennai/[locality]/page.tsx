@@ -119,15 +119,15 @@ export default async function LocalityPage({ params }: { params: Promise<{ local
 
           <div className="relative">
             <nav className="mb-8 flex items-center gap-2 text-xs text-white/40" aria-label="Breadcrumb">
-              <Link href="/" className="transition-colors hover:text-white">Chennai.rent</Link>
+              <Link href="/" className="tap inline-block transition-colors hover:text-white">Chennai.rent</Link>
               <span>/</span>
-              <Link href="/explore" className="transition-colors hover:text-white">Localities</Link>
+              <Link href="/explore" className="tap inline-block transition-colors hover:text-white">Localities</Link>
               <span>/</span>
               <span className="text-white/70">{area.name}</span>
             </nav>
 
             <Eyebrow className="text-owner">{area.kind === 'zone' ? 'Chennai corridor' : CITY_LABEL}</Eyebrow>
-            <h1 className="mt-5 text-display font-semibold uppercase">{area.name}</h1>
+            <h1 className="mt-5 text-[clamp(1.75rem,8.5vw,5.75rem)] leading-[0.94] tracking-[-0.04em] break-words font-semibold uppercase">{area.name}</h1>
 
             {area.blurb ? <p className="mt-5 max-w-lg text-[0.9375rem] text-white/55">{area.blurb}</p> : null}
 
@@ -255,7 +255,7 @@ export default async function LocalityPage({ params }: { params: Promise<{ local
             {tolets.length ? (
               <div className="mt-8 border-t border-line pt-6">
                 <Pill tone="tolet">{stats.toletCount} To-Let boards reported nearby</Pill>
-                <Link href="/to-let" className="mt-4 block text-sm font-semibold underline-offset-4 hover:underline">
+                <Link href="/to-let" className="tap mt-4 inline-block py-1.5 text-sm font-semibold underline-offset-4 hover:underline">
                   Browse To-Let boards →
                 </Link>
               </div>

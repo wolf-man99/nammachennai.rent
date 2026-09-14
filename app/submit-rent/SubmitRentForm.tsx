@@ -149,7 +149,7 @@ export function SubmitRentForm({ localities }: { localities: Locality[] }) {
           <button
             type="button"
             onClick={() => setExpanded(true)}
-            className="text-sm font-semibold text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
+            className="tap inline-block py-2 text-sm font-semibold text-muted underline-offset-4 transition-colors hover:text-ink hover:underline"
           >
             + Add floor, parking and other details
           </button>

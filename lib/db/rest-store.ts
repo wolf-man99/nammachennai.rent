@@ -23,6 +23,26 @@ function config() {
   return { base: `${url.replace(/\/$/, '')}/rest/v1`, key };
 }
 
+/** Cache tag per table, so a write invalidates exactly the reads it affects. */
+function cacheTag(table: TableName) {
+  return `db:${table}`;
+}
+
+/**
+ * Invalidate cached reads after a write.
+ *
+ * Only valid inside a Next request scope, so scripts and render-time seeding
+ * fall through harmlessly.
+ */
+async function invalidate(table: TableName) {
+  try {
+    const { revalidateTag } = await import('next/cache');
+    revalidateTag(cacheTag(table));
+  } catch {
+    /* not in a Next request scope */
+  }
+}
+
 function headers(extra: Record<string, string> = {}) {
   const { key } = config();
   return {
@@ -81,14 +101,68 @@ function applyFilters(params: URLSearchParams, table: TableName, where: Conditio
   }
 }
 
-async function request(path: string, init: RequestInit & { headers?: Record<string, string> }) {
+/**
+ * Transient failures seen in practice: a 5xx from the gateway, a dropped
+ * connection, and PGRST303 ("JWT issued at future") when Supabase's clock is a
+ * moment ahead of ours. None of them mean the request was wrong, so retrying a
+ * read costs far less than failing a page render.
+ */
+function isTransient(status: number, body: string): boolean {
+  if (status >= 500) return true;
+  if (status === 429) return true;
+  if (status === 401 && body.includes('PGRST303')) return true;
+  return false;
+}
+
+const RETRY_DELAYS_MS = [120, 400, 1000];
+
+async function request(
+  path: string,
+  init: RequestInit & { headers?: Record<string, string> },
+  table?: TableName,
+) {
   const { base } = config();
-  const res = await fetch(`${base}/${path}`, { ...init, cache: 'no-store' });
-  if (!res.ok) {
+  const method = init.method ?? 'GET';
+
+  /*
+   * Reads join Next's Data Cache and inherit each route's own `revalidate`,
+   * keeping statically generated pages static; a tag lets writes invalidate
+   * them immediately. Writes bypass the cache entirely.
+   */
+  const caching: RequestInit =
+    method === 'GET'
+      ? ({ next: table ? { tags: [cacheTag(table)] } : {} } as RequestInit)
+      : { cache: 'no-store' };
+  // Only reads are retried automatically; replaying a write could duplicate a row.
+  const retryable = method === 'GET';
+  let lastError = '';
+
+  for (let attempt = 0; ; attempt++) {
+    let res: Response;
+    try {
+      res = await fetch(`${base}/${path}`, { ...caching, ...init });
+    } catch (err) {
+      lastError = err instanceof Error ? err.message : String(err);
+      if (retryable && attempt < RETRY_DELAYS_MS.length) {
+        await sleep(RETRY_DELAYS_MS[attempt]);
+        continue;
+      }
+      throw new Error(`Supabase REST ${method} ${path} failed: ${lastError}`);
+    }
+
+    if (res.ok) return res;
+
     const body = await res.text().catch(() => '');
-    throw new Error(`Supabase REST ${init.method ?? 'GET'} ${path} failed (${res.status}): ${body.slice(0, 300)}`);
+    if (retryable && isTransient(res.status, body) && attempt < RETRY_DELAYS_MS.length) {
+      await sleep(RETRY_DELAYS_MS[attempt]);
+      continue;
+    }
+    throw new Error(`Supabase REST ${method} ${path} failed (${res.status}): ${body.slice(0, 300)}`);
   }
-  return res;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export function createRestStore(): Store {
@@ -120,7 +194,7 @@ export function createRestStore(): Store {
 
       // An explicit limit is a single request.
       if (options.limit !== undefined) {
-        const res = await request(build(options.limit, options.offset ?? 0), { method: 'GET', headers: headers() });
+        const res = await request(build(options.limit, options.offset ?? 0), { method: 'GET', headers: headers() }, table);
         return (await res.json()) as T[];
       }
 
@@ -129,7 +203,7 @@ export function createRestStore(): Store {
       const out: T[] = [];
       let offset = options.offset ?? 0;
       for (;;) {
-        const res = await request(build(PAGE_SIZE, offset), { method: 'GET', headers: headers() });
+        const res = await request(build(PAGE_SIZE, offset), { method: 'GET', headers: headers() }, table);
         const batch = (await res.json()) as T[];
         out.push(...batch);
         if (batch.length < PAGE_SIZE) return out;
@@ -139,7 +213,7 @@ export function createRestStore(): Store {
 
     async get<T = Row>(table: TableName, id: string): Promise<T | null> {
       const params = new URLSearchParams({ select: '*', id: `eq.${id}`, limit: '1' });
-      const res = await request(`${table}?${params.toString()}`, { method: 'GET', headers: headers() });
+      const res = await request(`${table}?${params.toString()}`, { method: 'GET', headers: headers() }, table);
       const rows = (await res.json()) as T[];
       return rows[0] ?? null;
     },
@@ -160,7 +234,9 @@ export function createRestStore(): Store {
         headers: headers({ prefer: 'return=representation' }),
         body: JSON.stringify(payload),
       });
-      return (await res.json()) as T[];
+      const rows = (await res.json()) as T[];
+      await invalidate(table);
+      return rows;
     },
 
     async update<T = Row>(table: TableName, id: string, patch: Row): Promise<T | null> {
@@ -175,6 +251,7 @@ export function createRestStore(): Store {
         body: JSON.stringify(body),
       });
       const rows = (await res.json()) as T[];
+      await invalidate(table);
       return rows[0] ?? null;
     },
 
@@ -185,16 +262,18 @@ export function createRestStore(): Store {
         headers: headers({ prefer: 'return=representation' }),
       });
       const rows = (await res.json()) as Row[];
+      await invalidate(table);
       return rows.length > 0;
     },
 
     async count(table: TableName, where: Condition[] = []): Promise<number> {
       const params = new URLSearchParams({ select: 'id' });
       applyFilters(params, table, where);
-      const res = await request(`${table}?${params.toString()}`, {
-        method: 'GET',
-        headers: headers({ prefer: 'count=exact', range: '0-0' }),
-      });
+      const res = await request(
+        `${table}?${params.toString()}`,
+        { method: 'GET', headers: headers({ prefer: 'count=exact', range: '0-0' }) },
+        table,
+      );
       // Content-Range looks like "0-0/42"; "*/0" when empty.
       const total = res.headers.get('content-range')?.split('/')[1];
       return total && total !== '*' ? Number(total) : 0;
