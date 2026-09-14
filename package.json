@@ -9,7 +9,9 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "seed": "tsx scripts/seed.ts",
-    "db:push": "tsx scripts/db-push.ts"
+    "db:push": "tsx scripts/db-push.ts",
+    "admin:hash": "tsx scripts/admin-hash.ts",
+    "scan:secrets": "tsx scripts/scan-secrets.ts"
   },
   "dependencies": {
     "maplibre-gl": "^5.6.0",

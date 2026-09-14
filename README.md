@@ -81,6 +81,32 @@ by ~400 m (`lib/geo.ts`).
 
 ---
 
+## Secrets
+
+Nothing secret is ever committed. `.gitignore` excludes every `.env` variant
+except the template, and `npm run scan:secrets` fails the build if a credential
+shape reaches a tracked file, git history, or the client bundle — run it in CI.
+
+Where each value lives:
+
+| Value | Storage | Why |
+| --- | --- | --- |
+| `DATABASE_URL`, `SUPABASE_SECRET_KEY` | Platform secret store (Vercel env vars) | The server must present the original value to authenticate, so these are encrypted at rest, never hashed |
+| `ADMIN_PASSWORD_HASH` | Platform secret store | Only ever compared, so it **is** hashed — scrypt, 16-byte salt, via `npm run admin:hash` |
+| `HASH_SALT` | Platform secret store | Salts the non-reversible submitter fingerprint |
+| `NEXT_PUBLIC_*` | Public by design | Inlined into the browser bundle — never put a secret here |
+
+Only `NEXT_PUBLIC_`-prefixed variables reach the client. Everything else is read
+from `process.env` at runtime and is absent from the build output, which
+`scan:secrets` verifies against `.next/static` on every run.
+
+Anyone with access to the hosting project or the Supabase dashboard can read the
+runtime secrets — that is inherent to the server needing them. Limit who holds
+those logins, and rotate in Supabase (Settings → API → roll key; Settings →
+Database → reset password) if a value is ever exposed.
+
+---
+
 ## Architecture
 
 ```
