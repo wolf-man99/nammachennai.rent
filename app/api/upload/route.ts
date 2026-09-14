@@ -46,20 +46,29 @@ export async function POST(req: Request) {
   const name = `${randomUUID()}.${signature.ext}`;
 
   const supabaseUrl = process.env.SUPABASE_URL;
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Supabase is migrating from service_role JWTs to sb_secret_... keys; accept
+  // either name so a project on the new key system needs no code change.
+  const secretKey = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
   const bucket = process.env.SUPABASE_STORAGE_BUCKET || 'photos';
 
-  if (supabaseUrl && serviceKey) {
+  if (supabaseUrl && secretKey) {
     const res = await fetch(`${supabaseUrl}/storage/v1/object/${bucket}/${name}`, {
       method: 'POST',
       headers: {
-        authorization: `Bearer ${serviceKey}`,
+        // New-format keys are rejected without `apikey` alongside the bearer
+        // token; legacy JWTs accept both, so sending both works either way.
+        apikey: secretKey,
+        authorization: `Bearer ${secretKey}`,
         'content-type': signature.type,
         'cache-control': 'public, max-age=31536000, immutable',
       },
       body: bytes,
     });
-    if (!res.ok) return fail('Upload failed. Please try again.', 502);
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '');
+      console.error('Supabase storage upload failed', res.status, detail.slice(0, 300));
+      return fail('Upload failed. Please try again.', 502);
+    }
     return ok({ url: `${supabaseUrl}/storage/v1/object/public/${bucket}/${name}` }, { status: 201 });
   }
 
