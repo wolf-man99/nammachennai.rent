@@ -6,7 +6,7 @@ import { ActionBar, LoginForm, LogoutButton } from './AdminClient';
 import { Container } from '@/components/ui/primitives';
 import { LABELS } from '@/lib/constants';
 import { formatDate, formatRent, relativeTime } from '@/lib/format';
-import { usingPostgres } from '@/lib/db';
+import { driverLabel } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,7 +32,7 @@ export default async function AdminPage() {
         <div>
           <h1 className="text-title font-semibold tracking-tight">Moderation</h1>
           <p className="mt-1 text-sm text-muted">
-            Storage: {usingPostgres() ? 'Postgres' : 'local file store (development)'}
+            Storage: {driverLabel()}
           </p>
         </div>
         <LogoutButton />

@@ -18,7 +18,7 @@ export interface FindOptions {
 export type Row = Record<string, unknown>;
 
 export interface Store {
-  readonly driver: 'postgres' | 'file';
+  readonly driver: 'postgres' | 'rest' | 'file';
   find<T = Row>(table: TableName, options?: FindOptions): Promise<T[]>;
   get<T = Row>(table: TableName, id: string): Promise<T | null>;
   insert<T = Row>(table: TableName, values: Row): Promise<T>;
@@ -26,7 +26,7 @@ export interface Store {
   update<T = Row>(table: TableName, id: string, patch: Row): Promise<T | null>;
   remove(table: TableName, id: string): Promise<boolean>;
   count(table: TableName, where?: Condition[]): Promise<number>;
-  /** Idempotent schema creation. No-op for the file driver. */
+  /** Idempotent schema creation. No-op for the file driver; unsupported over REST. */
   migrate(): Promise<void>;
 }
 

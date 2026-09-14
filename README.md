@@ -28,17 +28,33 @@ npm run build && npm start
 
 ## Going to production
 
-1. Create a Postgres database (Supabase works well) and set `DATABASE_URL`.
-2. `npm run db:push` — applies the schema and writes `db/schema.sql` for anyone
-   who prefers the Supabase SQL editor.
-3. Set `ADMIN_PASSWORD` to enable `/admin`, and `HASH_SALT` to a long random
-   string.
-4. For photo uploads set `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`. A
+There are two ways to reach Supabase. Pick one.
+
+**A — REST, no connection string.** The app talks to Supabase over HTTPS with
+the project's secret key. No database password exists anywhere in the
+deployment, and serverless functions need no connection pool.
+
+1. Paste `db/schema.sql` into the Supabase SQL editor and run it.
+2. Set `SUPABASE_URL` and `SUPABASE_SECRET_KEY`.
+
+**B — direct Postgres.** Lower per-query latency, and migrations run from the CLI.
+
+1. Set `DATABASE_URL` to the **transaction pooler** string (port 6543). The
+   direct `db.*` host resolves to IPv6 only, which most serverless platforms
+   cannot reach.
+2. `npm run db:push` applies the schema.
+
+Then, either way:
+
+3. Create a public Storage bucket named `photos` for listing images. A
    serverless filesystem is read-only, so the `public/uploads` fallback is for
    local development only.
+4. `npm run admin:hash -- 'your password'` and set `ADMIN_PASSWORD_HASH` to
+   enable `/admin`; set `HASH_SALT` to a long random string.
 5. Deploy to Vercel. Nothing else is required — the map needs no token.
 
-See `.env.example` for every variable.
+`DATABASE_URL` wins when both are set. With neither, the app falls back to the
+local file store. See `.env.example` for every variable.
 
 ---
 
