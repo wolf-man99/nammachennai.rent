@@ -1,4 +1,4 @@
-import { ok, fail, fromZod, readJson, tooMany } from '@/lib/api';
+import { ok, fail, fromZod, readJson, tooMany, handle } from '@/lib/api';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { seekerSchema } from '@/lib/validation/schemas';
 import { getLocalityBySlug } from '@/services/localities';
@@ -13,6 +13,7 @@ import type { Seeker } from '@/types';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  return handle(async () => {
   const limit = rateLimit(clientKey(req, 'seeker'), 8, 3600_000);
   if (!limit.ok) return tooMany(limit.retryAfterSeconds);
 
@@ -59,4 +60,5 @@ export async function POST(req: Request) {
     },
     { status: 201 },
   );
+  });
 }

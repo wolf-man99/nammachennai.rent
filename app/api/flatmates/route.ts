@@ -1,4 +1,4 @@
-import { ok, fail, fromZod, readJson, tooMany } from '@/lib/api';
+import { ok, fail, fromZod, readJson, tooMany, handle } from '@/lib/api';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { flatmateSchema } from '@/lib/validation/schemas';
 import { sanitiseFreeText } from '@/lib/quality';
@@ -11,6 +11,7 @@ import type { FlatmateListing } from '@/types';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  return handle(async () => {
   const limit = rateLimit(clientKey(req, 'flatmate'), 6, 3600_000);
   if (!limit.ok) return tooMany(limit.retryAfterSeconds);
 
@@ -42,4 +43,5 @@ export async function POST(req: Request) {
 
   recordEvent('flatmate_submission', { locality: locality.slug, room_type: input.room_type });
   return ok({ id: row.id }, { status: 201 });
+  });
 }

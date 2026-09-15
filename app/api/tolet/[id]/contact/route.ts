@@ -1,4 +1,4 @@
-import { ok, fail, fromZod, readJson, tooMany } from '@/lib/api';
+import { ok, fail, fromZod, readJson, tooMany, handle } from '@/lib/api';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { contactRequestSchema } from '@/lib/validation/schemas';
 import { recordEvent } from '@/lib/analytics/server';
@@ -9,6 +9,7 @@ export const runtime = 'nodejs';
 
 /** The number on a public board is still contact data - it goes through the same gate. */
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  return handle(async () => {
   const { id } = await params;
 
   const limit = rateLimit(clientKey(req, 'contact'), 12, 3600_000);
@@ -24,4 +25,5 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   recordEvent('contact_owner', { tolet_id: id });
   const digits = row.phone.replace(/\D/g, '').slice(-10);
   return ok({ phone: digits, whatsapp: `https://wa.me/91${digits}` });
+  });
 }

@@ -1,4 +1,4 @@
-import { ok, fail, fromZod, readJson, tooMany } from '@/lib/api';
+import { ok, fail, fromZod, readJson, tooMany, handle } from '@/lib/api';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { contactRequestSchema } from '@/lib/validation/schemas';
 import { recordEvent } from '@/lib/analytics/server';
@@ -8,6 +8,7 @@ import type { FlatmateListing } from '@/types';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  return handle(async () => {
   const { id } = await params;
 
   const limit = rateLimit(clientKey(req, 'contact'), 12, 3600_000);
@@ -29,5 +30,6 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     whatsapp: `https://wa.me/91${digits}?text=${encodeURIComponent(
       'Hi, I saw your room on Chennai.rent. Is it still available?',
     )}`,
+  });
   });
 }

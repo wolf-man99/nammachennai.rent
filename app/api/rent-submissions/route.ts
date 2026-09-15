@@ -1,4 +1,4 @@
-import { ok, fail, fromZod, readJson, tooMany } from '@/lib/api';
+import { ok, fail, fromZod, readJson, tooMany, handle } from '@/lib/api';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { rentSubmissionSchema } from '@/lib/validation/schemas';
 import { assessRentSubmission, sanitiseFreeText, submitterHash } from '@/lib/quality';
@@ -11,6 +11,7 @@ import type { RentSubmission } from '@/types';
 export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
+  return handle(async () => {
   const limit = rateLimit(clientKey(req, 'rent'), 10, 3600_000);
   if (!limit.ok) return tooMany(limit.retryAfterSeconds);
 
@@ -63,4 +64,5 @@ export async function POST(req: Request) {
   });
 
   return ok({ id: row.id, locality: { name: locality.name, slug: locality.slug } }, { status: 201 });
+  });
 }
