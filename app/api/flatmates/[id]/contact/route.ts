@@ -28,7 +28,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     owner_name: row.contact_name,
     phone: digits,
     whatsapp: `https://wa.me/91${digits}?text=${encodeURIComponent(
-      'Hi, I saw your room on NammaChennai.rent. Is it still available?',
+      'Hi, I saw your room on Rent In Chennai. Is it still available?',
     )}`,
   });
   });

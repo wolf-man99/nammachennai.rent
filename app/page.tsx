@@ -16,7 +16,7 @@ import { MIN_SAMPLE, SITE_URL } from '@/lib/constants';
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: 'Chennai Rent Prices & Owner-Direct Homes | NammaChennai.rent',
+  title: 'Chennai Rent Prices & Owner-Direct Homes | Rent In Chennai',
   description:
     'See what Chennai renters are actually paying, compare neighbourhoods and find owner-direct homes with zero brokerage.',
   alternates: { canonical: '/' },
@@ -53,7 +53,7 @@ export default async function HomePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'NammaChennai.rent',
+    name: 'Rent In Chennai',
     url: SITE_URL,
     description:
       'Rent intelligence for Chennai — renter-reported rents, locality medians and owner-direct homes.',
@@ -231,7 +231,7 @@ export default async function HomePage() {
         ) : (
           <EmptyState
             title="No owner listings yet"
-            body="NammaChennai.rent is owner-direct only. Be the first owner to list a home — it takes two minutes and costs nothing."
+            body="Rent In Chennai is owner-direct only. Be the first owner to list a home — it takes two minutes and costs nothing."
             cta={{ href: '/list-property', label: 'List Your Property' }}
           />
         )}
@@ -239,7 +239,7 @@ export default async function HomePage() {
 
       {/* --------------------------------------------------- More product */}
       <Container className="mt-20">
-        <SectionHeader eyebrow="More ways to use NammaChennai.rent" title="Beyond the listings" />
+        <SectionHeader eyebrow="More ways to use Rent In Chennai" title="Beyond the listings" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
             href="/find"

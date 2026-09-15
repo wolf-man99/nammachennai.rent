@@ -64,7 +64,7 @@ export function ContactOwner({
           </a>
         </div>
         <p className="mt-4 text-xs text-ink/55">
-          Mention NammaChennai.rent when you call. If anyone asks you for brokerage, report the listing.
+          Mention Rent In Chennai when you call. If anyone asks you for brokerage, report the listing.
         </p>
       </div>
     );

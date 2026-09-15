@@ -32,7 +32,7 @@ export async function POST(req: Request) {
   const input = parsed.data;
 
   const locality = await getLocalityBySlug(input.locality_slug);
-  if (!locality) return fail('That locality is not on NammaChennai.rent yet.', 422, { locality_slug: 'Pick a Chennai locality' });
+  if (!locality) return fail('That locality is not on Rent In Chennai yet.', 422, { locality_slug: 'Pick a Chennai locality' });
 
   const phone = input.owner_phone.replace(/[\s-]/g, '').slice(-10);
   const verdict = await assessListing({
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   });
   if (verdict.reject) {
     return fail(
-      'That is a lot of listings from one number today. NammaChennai.rent is owner-direct only — email us if you manage several homes.',
+      'That is a lot of listings from one number today. Rent In Chennai is owner-direct only — email us if you manage several homes.',
       409,
     );
   }

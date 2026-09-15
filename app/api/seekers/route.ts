@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   const input = parsed.data;
 
   const locality = await getLocalityBySlug(input.locality_slug);
-  if (!locality) return fail('That locality is not on NammaChennai.rent yet.', 422, { locality_slug: 'Pick a Chennai locality' });
+  if (!locality) return fail('That locality is not on Rent In Chennai yet.', 422, { locality_slug: 'Pick a Chennai locality' });
 
   const seeker = await db().insert<Seeker>('seekers', {
     city: CITY,

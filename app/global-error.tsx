@@ -20,7 +20,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
       >
         <div style={{ maxWidth: 420, textAlign: 'center' }}>
           <p style={{ fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#a1a19a' }}>
-            NammaChennai.rent
+            Rent In Chennai
           </p>
           <h1 style={{ margin: '20px 0 0', fontSize: 32, letterSpacing: '-0.03em', lineHeight: 1.1 }}>
             Something went wrong

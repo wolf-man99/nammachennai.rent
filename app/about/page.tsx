@@ -3,9 +3,9 @@ import { ButtonLink, Container, Eyebrow, SectionHeader } from '@/components/ui/p
 import { MIN_SAMPLE, MIN_SAMPLE_INDEXABLE } from '@/lib/constants';
 
 export const metadata: Metadata = {
-  title: 'How NammaChennai.rent works',
+  title: 'How it works',
   description:
-    'How NammaChennai.rent collects rent data, what we publish, what we refuse to estimate, and how we handle your privacy.',
+    'How Rent In Chennai collects rent data, what we publish, what we refuse to estimate, and how we handle your privacy.',
   alternates: { canonical: '/about' },
 };
 
@@ -24,7 +24,7 @@ const PRINCIPLES = [
   },
   {
     title: 'Owner-direct only',
-    body: 'NammaChennai.rent charges no brokerage and lists no broker inventory. Accounts posting like agencies are flagged automatically and reviewed.',
+    body: 'Rent In Chennai charges no brokerage and lists no broker inventory. Accounts posting like agencies are flagged automatically and reviewed.',
   },
   {
     title: 'Thin pages stay out of search',
@@ -40,7 +40,7 @@ export default function AboutPage() {
         Rent data, measured honestly
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-        NammaChennai.rent exists because nobody can tell you what rent should cost in Chennai. Portals
+        Rent In Chennai exists because nobody can tell you what rent should cost in Chennai. Portals
         show asking prices; brokers show what suits them. We show what renters say they actually pay.
       </p>
 

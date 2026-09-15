@@ -34,7 +34,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     owner_name: listing.owner_name,
     phone: digits,
     whatsapp: `https://wa.me/91${digits}?text=${encodeURIComponent(
-      `Hi, I saw your ${listing.bhk.replace('BHK', ' BHK')} on NammaChennai.rent. Is it still available?`,
+      `Hi, I saw your ${listing.bhk.replace('BHK', ' BHK')} on Rent In Chennai. Is it still available?`,
     )}`,
   });
   });

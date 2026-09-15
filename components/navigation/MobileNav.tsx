@@ -50,9 +50,9 @@ export function MobileHeader() {
       <Logo />
       <Link
         href="/list-property"
-        className="ml-3 inline-flex h-9 shrink-0 items-center rounded-pill bg-owner px-3.5 text-[0.8125rem] font-semibold text-ink sm:px-4 sm:text-sm"
+        className="ml-3 inline-flex h-9 shrink-0 items-center rounded-pill bg-owner px-4 text-sm font-semibold text-ink"
       >
-        List<span className="hidden xs:inline sm:inline">&nbsp;Property</span>
+        List Property
       </Link>
     </header>
   );

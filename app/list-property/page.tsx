@@ -29,7 +29,7 @@ export default async function ListPropertyPage() {
           Pay ₹0 brokerage.
         </>
       }
-      lede="NammaChennai.rent is owner-direct only. Publish your home in a couple of minutes and talk to renters yourself."
+      lede="Rent In Chennai is owner-direct only. Publish your home in a couple of minutes and talk to renters yourself."
       aside={
         <ul className="space-y-3">
           {POINTS.map((p) => (

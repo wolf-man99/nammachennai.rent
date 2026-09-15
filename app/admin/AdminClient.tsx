@@ -30,7 +30,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
       className="card mx-auto mt-16 max-w-sm p-8"
     >
       <h1 className="text-title font-semibold tracking-tight">Admin</h1>
-      <p className="mt-2 text-sm text-muted">Moderation console for NammaChennai.rent.</p>
+      <p className="mt-2 text-sm text-muted">Moderation console for Rent In Chennai.</p>
 
       {!configured ? (
         <p className="mt-6 rounded-field bg-warning-soft px-4 py-3 text-sm text-warning">

@@ -14,7 +14,7 @@ export const revalidate = 600;
 export const metadata: Metadata = {
   title: 'Compare Chennai localities by rent',
   description:
-    'Compare median rent, spread and trend across every Chennai locality on NammaChennai.rent — built from renter-reported data.',
+    'Compare median rent, spread and trend across every Chennai locality on Rent In Chennai — built from renter-reported data.',
   alternates: { canonical: '/explore' },
 };
 

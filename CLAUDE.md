@@ -1,4 +1,4 @@
-# Working agreements for NammaChennai.rent
+# Working agreements for Rent In Chennai
 
 ## Git
 

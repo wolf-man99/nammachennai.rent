@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Logo({ dark = false, className = '' }: { dark?: boolean; className?: string }) {
   return (
-    <Link href="/" className={`group inline-flex items-center gap-2.5 py-2 ${className}`} aria-label="NammaChennai.rent home">
+    <Link href="/" className={`group inline-flex items-center gap-2.5 py-2 ${className}`} aria-label="Rent In Chennai home">
       <span className="flex items-end gap-[3px]" aria-hidden="true">
         {[9, 14, 20, 11].map((h, i) => (
           <span
@@ -15,8 +15,13 @@ export function Logo({ dark = false, className = '' }: { dark?: boolean; classNa
         ))}
       </span>
       <span className={`text-[0.9375rem] font-semibold tracking-tight sm:text-[1.0625rem] ${dark ? 'text-white' : 'text-ink'}`}>
-        NammaChennai<span className={dark ? 'text-white/45' : 'text-faint'}>.rent</span>
+        Rent<Dot dark={dark} />In<Dot dark={dark} />Chennai
       </span>
     </Link>
   );
+}
+
+/** The separators carry the muted tone the rest of the system uses for secondary text. */
+function Dot({ dark }: { dark: boolean }) {
+  return <span className={dark ? 'text-white/40' : 'text-faint'}>.</span>;
 }
