@@ -4,6 +4,7 @@ import { listingSchema } from '@/lib/validation/schemas';
 import { assessListing, sanitiseFreeText } from '@/lib/quality';
 import { getLocalityBySlug } from '@/services/localities';
 import { defaultExpiry, getListings } from '@/services/listings';
+import { issueOwnerToken } from '@/services/owner';
 import { recordEvent } from '@/lib/analytics/server';
 import { db } from '@/lib/db';
 import { CITY, BHK_VALUES } from '@/lib/constants';
@@ -83,6 +84,10 @@ export async function POST(req: Request) {
 
   recordEvent('listing_completed', { locality: locality.slug, bhk: input.bhk, flags: verdict.flags });
 
-  return ok({ id: row.id }, { status: 201 });
+  // Shown once, on the success screen. Only its hash is stored, so it cannot be
+  // recovered later - which is why the UI tells the owner to keep it.
+  const manageToken = await issueOwnerToken(phone).catch(() => null);
+
+  return ok({ id: row.id, manageToken }, { status: 201 });
   });
 }

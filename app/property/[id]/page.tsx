@@ -15,6 +15,7 @@ import { ContactOwner } from '@/components/listings/ContactOwner';
 import { ReportEntity } from '@/components/listings/ReportEntity';
 import { ListingGrid } from '@/components/listings/ListingCard';
 import { NoPhoto } from '@/components/listings/NoPhoto';
+import { ViewBeacon } from '@/components/listings/ViewBeacon';
 import { getListing, getRentContext, getSimilarListings } from '@/services/listings';
 import { LABELS, SITE_URL } from '@/lib/constants';
 import { formatDate, formatRent, formatRentShort, relativeTime } from '@/lib/format';
@@ -82,6 +83,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <ViewBeacon listingId={listing.id} />
 
       <Container className="pt-6 lg:pt-10">
         <nav className="mb-7 flex flex-wrap items-center gap-2 text-xs text-faint" aria-label="Breadcrumb">

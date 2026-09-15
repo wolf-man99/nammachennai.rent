@@ -68,6 +68,7 @@ Six loops, all live:
 | Rent search | `/`, `/explore` | Parses "2 BHK OMR under 30k" and routes to the right report |
 | Rent map | `/map` | Reports, owner listings and To-Let boards, each with its own accent |
 | Owner-direct | `/list-property`, `/listings`, `/property/[id]` | Zero-brokerage marketplace |
+| Owner dashboard | `/manage/[token]` | Views, enquiries and listing controls — no account |
 | Seeker | `/find` | Stores a requirement and returns ranked matches immediately |
 | To-Let | `/to-let` | Turns physical boards into searchable inventory |
 | Flatmates | `/flatmates` | Rooms and shared flats |
@@ -76,6 +77,29 @@ Locality intelligence lives at `/chennai/[locality]` and `/chennai/[locality]/[b
 Corridors get their own page too — `/chennai/omr` aggregates every locality on it.
 
 ---
+
+## Owner dashboards without accounts
+
+A listing already carries the owner's phone number, so the only open question is
+how they prove they hold it. Today a secret link answers that; phone OTP can
+answer it later without changing anything else, because the dashboard is keyed
+by phone either way.
+
+- On listing, `owner_access` issues a 256-bit token, shown once. Only its
+  SHA-256 hash is stored, so a database leak yields no working dashboards.
+- `/manage/<token>` lists every home on that number with unique viewers,
+  enquirers (name and phone, to call back) and mark-rented / hide / republish.
+- The page is `noindex` with `Referrer-Policy: no-referrer`, so the token cannot
+  reach a search engine or leak through an outbound click.
+- Ownership is checked against the phone on the listing, not the token alone, so
+  one owner's link cannot touch another's listing.
+
+Views are counted from a beacon rather than during render — the property page is
+statically generated, so counting at render time would miss most visits and
+count crawlers. One row per viewer per day, bots excluded.
+
+The trade-off: a lost link cannot be resent. The browser keeps a copy, and an
+operator can look one up. That gap is precisely what OTP closes.
 
 ## Rules the code enforces
 

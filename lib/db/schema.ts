@@ -36,6 +36,9 @@ export const TABLES = {
     'landmark', 'seen_at', 'status', 'created_at',
   ],
   reports: ['id', 'entity_type', 'entity_id', 'reason', 'description', 'created_at'],
+  owner_access: ['id', 'phone', 'token_hash', 'created_at', 'last_seen_at'],
+  listing_enquiries: ['id', 'listing_id', 'name', 'phone', 'created_at'],
+  listing_views: ['id', 'listing_id', 'viewer_hash', 'created_at'],
   events: ['id', 'name', 'props', 'created_at'],
 } as const;
 

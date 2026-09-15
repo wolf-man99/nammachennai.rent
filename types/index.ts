@@ -246,3 +246,44 @@ export interface MapPoint {
   href: string | null;
   label: string;
 }
+
+/* ------------------------------------------------------------------ */
+/* Owner dashboard                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * An owner's way back into their listings.
+ *
+ * Keyed by phone, because the listing already carries it. The token is the
+ * proof of possession; only its hash is stored.
+ */
+export interface OwnerAccess {
+  id: string;
+  phone: string;
+  token_hash: string;
+  created_at: string;
+  last_seen_at: string | null;
+}
+
+/** Someone who asked for this listing's contact details. */
+export interface ListingEnquiry {
+  id: string;
+  listing_id: string;
+  name: string;
+  phone: string;
+  created_at: string;
+}
+
+/** One row per viewer per day - deliberately not a raw hit counter. */
+export interface ListingView {
+  id: string;
+  listing_id: string;
+  viewer_hash: string;
+  created_at: string;
+}
+
+export interface OwnerListingSummary {
+  listing: PublicListing;
+  views: number;
+  enquiries: ListingEnquiry[];
+}

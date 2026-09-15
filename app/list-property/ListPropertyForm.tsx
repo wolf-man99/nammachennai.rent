@@ -25,9 +25,12 @@ import { SuccessPanel } from '@/components/forms/FormShell';
 import { useSubmit } from '@/components/forms/useSubmit';
 import { Button } from '@/components/ui/primitives';
 import { track } from '@/lib/analytics';
+import { DashboardLink } from './DashboardLink';
 
 export function ListPropertyForm({ localities }: { localities: Locality[] }) {
-  const { submit, loading, error, errors, data } = useSubmit<{ id: string }>('/api/listings');
+  const { submit, loading, error, errors, data } = useSubmit<{ id: string; manageToken: string | null }>(
+    '/api/listings',
+  );
   const [started, setStarted] = useState(false);
 
   const [ownerName, setOwnerName] = useState('');
@@ -59,7 +62,9 @@ export function ListPropertyForm({ localities }: { localities: Locality[] }) {
         body="Renters can see it now. Your number stays private — we pass it on only when someone asks to contact you, and never to brokers."
         primary={{ href: `/property/${data.id}`, label: 'View your listing' }}
         secondary={{ href: '/listings', label: 'See other homes' }}
-      />
+      >
+        {data.manageToken ? <DashboardLink token={data.manageToken} /> : null}
+      </SuccessPanel>
     );
   }
 

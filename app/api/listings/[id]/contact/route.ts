@@ -3,6 +3,7 @@ import { clientKey, rateLimit } from '@/lib/rate-limit';
 import { contactRequestSchema } from '@/lib/validation/schemas';
 import { getListingPrivate } from '@/services/listings';
 import { recordEvent } from '@/lib/analytics/server';
+import { recordEnquiry } from '@/services/owner';
 
 export const runtime = 'nodejs';
 
@@ -27,7 +28,10 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   if (listing.verification_status === 'rejected') return fail('This listing is under review.', 403);
   if (!listing.owner_phone) return fail('No contact is on file for this home.', 404);
 
-  recordEvent('contact_owner', { listing_id: id, seeker: parsed.data.name });
+  // Analytics is prunable; an enquiry is a business record the owner needs to
+  // call this person back, so it gets its own table.
+  await recordEnquiry(id, parsed.data.name, parsed.data.phone);
+  recordEvent('contact_owner', { listing_id: id });
 
   const digits = listing.owner_phone.replace(/\D/g, '').slice(-10);
   return ok({
