@@ -46,13 +46,13 @@ function Icon({ name }: { name: (typeof TABS)[number]['icon'] }) {
 
 export function MobileHeader() {
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-line bg-ground/90 px-5 backdrop-blur-xl lg:hidden">
+    <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 border-b border-line bg-ground/90 px-5 backdrop-blur-xl lg:hidden">
       <Logo />
       <Link
         href="/list-property"
-        className="inline-flex h-9 items-center rounded-pill bg-owner px-4 text-sm font-semibold text-ink"
+        className="ml-3 inline-flex h-9 shrink-0 items-center rounded-pill bg-owner px-3.5 text-[0.8125rem] font-semibold text-ink sm:px-4 sm:text-sm"
       >
-        List Property
+        List<span className="hidden xs:inline sm:inline">&nbsp;Property</span>
       </Link>
     </header>
   );

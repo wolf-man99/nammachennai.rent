@@ -2,8 +2,8 @@ import type { Bhk, Furnishing, GenderPreference, ParkingType, PropertyType, Room
 
 export const CITY = 'chennai' as const;
 export const CITY_LABEL = 'Chennai';
-export const SITE_NAME = 'Chennai.rent';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://chennai.rent';
+export const SITE_NAME = 'NammaChennai.rent';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nammachennai.rent';
 export const SITE_TAGLINE = 'Know what rent should cost.';
 
 /** Minimum renter reports before a median is honest enough to publish. */

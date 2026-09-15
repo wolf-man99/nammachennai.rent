@@ -6,6 +6,8 @@
    ========================================================================== */
 
 @theme {
+  --breakpoint-xs: 400px;
+
   /* --- Ink & ground ------------------------------------------------- */
   --color-ink: #141414; /* primary dark  - headlines, dark surfaces */
   --color-ink-soft: #232323; /* raised dark surface */

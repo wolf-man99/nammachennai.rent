@@ -9,7 +9,7 @@ export default function NotFound() {
           Nothing here
         </h1>
         <p className="mt-5 text-[0.9375rem] leading-relaxed text-muted">
-          That page does not exist. Chennai.rent covers Chennai localities only — try the rent map or
+          That page does not exist. NammaChennai.rent covers Chennai localities only — try the rent map or
           search for the area you are looking at.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">

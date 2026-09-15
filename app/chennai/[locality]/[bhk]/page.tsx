@@ -56,7 +56,7 @@ export async function generateMetadata({
   const indexable = Boolean(stats && stats.sample >= MIN_SAMPLE_INDEXABLE);
 
   return {
-    title: `${label} Rent in ${area.name}, ${CITY_LABEL} | Chennai.rent`,
+    title: `${label} Rent in ${area.name}, ${CITY_LABEL} | NammaChennai.rent`,
     description: stats
       ? `Median ${label} rent in ${area.name} is ${formatRent(stats.median)}, from ${stats.sample} renter reports. See the full range and owner-direct homes.`
       : `${label} rent data for ${area.name}, ${CITY_LABEL}. Renter reports, owner-direct homes and nearby comparisons.`,
@@ -95,7 +95,7 @@ export default async function BhkPage({
         name: `${label} rent in ${area.name}, ${CITY_LABEL}`,
         description: `Renter-reported ${label} rents in ${area.name}, ${CITY_LABEL}. Median ${formatRent(stats.median)} from ${stats.sample} reports.`,
         url: `${SITE_URL}/chennai/${area.slug}/${bhkSlug}`,
-        creator: { '@type': 'Organization', name: 'Chennai.rent' },
+        creator: { '@type': 'Organization', name: 'NammaChennai.rent' },
         temporalCoverage: new Date().getFullYear().toString(),
       }
     : null;
@@ -112,7 +112,7 @@ export default async function BhkPage({
 
           <div className="relative">
             <nav className="mb-8 flex items-center gap-2 text-xs text-white/40" aria-label="Breadcrumb">
-              <Link href="/" className="tap inline-block transition-colors hover:text-white">Chennai.rent</Link>
+              <Link href="/" className="tap inline-block transition-colors hover:text-white">NammaChennai.rent</Link>
               <span>/</span>
               <Link href={`/chennai/${area.slug}`} className="tap inline-block transition-colors hover:text-white">{area.name}</Link>
               <span>/</span>

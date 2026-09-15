@@ -142,7 +142,7 @@ export default async function ListingsPage({
             body={
               hasFilters
                 ? 'Try widening the budget or the locality — or tell us what you need and we will match you as homes arrive.'
-                : 'Chennai.rent is owner-direct only. Be the first owner to list a home here.'
+                : 'NammaChennai.rent is owner-direct only. Be the first owner to list a home here.'
             }
             cta={hasFilters ? { href: '/find', label: 'Find a home' } : { href: '/list-property', label: 'List Your Property' }}
           />

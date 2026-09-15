@@ -119,7 +119,7 @@ export default async function LocalityPage({ params }: { params: Promise<{ local
 
           <div className="relative">
             <nav className="mb-8 flex items-center gap-2 text-xs text-white/40" aria-label="Breadcrumb">
-              <Link href="/" className="tap inline-block transition-colors hover:text-white">Chennai.rent</Link>
+              <Link href="/" className="tap inline-block transition-colors hover:text-white">NammaChennai.rent</Link>
               <span>/</span>
               <Link href="/explore" className="tap inline-block transition-colors hover:text-white">Localities</Link>
               <span>/</span>

@@ -1,4 +1,4 @@
-# Chennai.rent
+# NammaChennai.rent
 
 **Know what rent should cost.**
 

@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     alternates: { canonical: `/property/${listing.id}` },
     openGraph: {
       title: `${label} in ${place} — ${formatRent(listing.rent)}/month`,
-      description: 'Owner-direct, zero brokerage, on Chennai.rent.',
+      description: 'Owner-direct, zero brokerage, on NammaChennai.rent.',
       images: listing.photos.length ? [listing.photos[0]] : undefined,
     },
   };
@@ -85,7 +85,7 @@ export default async function PropertyPage({ params }: { params: Promise<{ id: s
 
       <Container className="pt-6 lg:pt-10">
         <nav className="mb-7 flex flex-wrap items-center gap-2 text-xs text-faint" aria-label="Breadcrumb">
-          <Link href="/" className="tap inline-block transition-colors hover:text-ink">Chennai.rent</Link>
+          <Link href="/" className="tap inline-block transition-colors hover:text-ink">NammaChennai.rent</Link>
           <span>/</span>
           <Link href="/listings" className="tap inline-block transition-colors hover:text-ink">Homes</Link>
           <span>/</span>

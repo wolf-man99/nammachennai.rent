@@ -78,7 +78,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col gap-3 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Chennai.rent — rent intelligence for Chennai.</p>
+          <p>© {new Date().getFullYear()} NammaChennai.rent — rent intelligence for Chennai.</p>
           <p>Rent data is submitted anonymously. Contact details are never published.</p>
         </div>
       </Container>

@@ -22,7 +22,7 @@ const display = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Chennai Rent Prices & Owner-Direct Homes | Chennai.rent',
+    default: 'Chennai Rent Prices & Owner-Direct Homes | NammaChennai.rent',
     template: `%s | ${SITE_NAME}`,
   },
   description:

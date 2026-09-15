@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export function Logo({ dark = false, className = '' }: { dark?: boolean; className?: string }) {
   return (
-    <Link href="/" className={`group inline-flex items-center gap-2.5 py-2 ${className}`} aria-label="Chennai.rent home">
+    <Link href="/" className={`group inline-flex items-center gap-2.5 py-2 ${className}`} aria-label="NammaChennai.rent home">
       <span className="flex items-end gap-[3px]" aria-hidden="true">
         {[9, 14, 20, 11].map((h, i) => (
           <span
@@ -14,8 +14,8 @@ export function Logo({ dark = false, className = '' }: { dark?: boolean; classNa
           />
         ))}
       </span>
-      <span className={`text-[1.0625rem] font-semibold tracking-tight ${dark ? 'text-white' : 'text-ink'}`}>
-        Chennai<span className={dark ? 'text-white/45' : 'text-faint'}>.rent</span>
+      <span className={`text-[0.9375rem] font-semibold tracking-tight sm:text-[1.0625rem] ${dark ? 'text-white' : 'text-ink'}`}>
+        NammaChennai<span className={dark ? 'text-white/45' : 'text-faint'}>.rent</span>
       </span>
     </Link>
   );

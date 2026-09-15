@@ -134,7 +134,7 @@ export function FindHomeForm({ localities }: { localities: Locality[] }) {
       <div className="mt-8 space-y-4">
         <FormError message={error} />
         <PrivacyNote>
-          We never sell requirements to brokers. Your details stay with Chennai.rent and the owners
+          We never sell requirements to brokers. Your details stay with NammaChennai.rent and the owners
           you choose to contact.
         </PrivacyNote>
         <Button type="submit" size="lg" disabled={loading} className="w-full">
@@ -182,7 +182,7 @@ function MatchResults({ result }: { result: Result }) {
       ) : (
         <EmptyState
           title="Nothing matches yet"
-          body="Chennai.rent is owner-direct, so supply builds locality by locality. Meanwhile, see what renters nearby are paying."
+          body="NammaChennai.rent is owner-direct, so supply builds locality by locality. Meanwhile, see what renters nearby are paying."
           cta={{ href: '/map', label: 'Open the rent map' }}
         />
       )}
