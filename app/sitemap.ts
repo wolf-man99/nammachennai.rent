@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { allAreaSlugs, resolveArea } from '@/services/localities';
-import { getBhkStats } from '@/services/rent-stats';
+import { getSubmissions } from '@/services/rent-stats';
 import { getListings } from '@/services/listings';
 import { BHK_SLUGS, BHK_VALUES, MIN_SAMPLE_INDEXABLE, SITE_URL } from '@/lib/constants';
 
@@ -36,13 +36,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: a.kind === 'zone' ? 0.85 : 0.8,
   }));
 
+  /*
+   * Counted in one pass. Asking the database per area per size meant ~1,400
+   * queries once Chennai had its full locality list, which made every build
+   * hammer Supabase for a file that changes slowly.
+   */
+  const submissions = await getSubmissions();
+  const counts = new Map<string, number>();
+  for (const s of submissions) {
+    const key = `${s.locality_id}|${s.bhk}`;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+
   const bhkRoutes: MetadataRoute.Sitemap = [];
   for (const a of areas) {
     const area = await resolveArea(a.slug);
     if (!area) continue;
     for (const bhk of BHK_VALUES) {
-      const { stats } = await getBhkStats(area.localities, bhk);
-      if (stats && stats.sample >= MIN_SAMPLE_INDEXABLE) {
+      const sample = area.localities.reduce(
+        (total, l) => total + (counts.get(`${l.id}|${bhk}`) ?? 0),
+        0,
+      );
+      // Only pages carrying enough renter data to be useful are worth indexing.
+      if (sample >= MIN_SAMPLE_INDEXABLE) {
         bhkRoutes.push({
           url: `${SITE_URL}/chennai/${a.slug}/${BHK_SLUGS[bhk]}`,
           lastModified: now,

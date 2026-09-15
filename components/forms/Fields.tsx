@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useMemo, useState, type ReactNode } from 'react';
+import { localityMatches } from '@/lib/search-query';
 import type { Locality } from '@/types';
 
 /**
@@ -230,9 +231,7 @@ export function LocalityPicker({
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return localities.slice(0, 40);
-    return localities
-      .filter((l) => l.name.toLowerCase().includes(q) || (l.zone ?? '').toLowerCase().includes(q))
-      .slice(0, 40);
+    return localities.filter((l) => localityMatches(l.name, l.zone, q)).slice(0, 40);
   }, [localities, query]);
 
   if (selected && !open) {

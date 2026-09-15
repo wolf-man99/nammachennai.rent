@@ -15,7 +15,7 @@ import { DistributionChart, TrendLine } from '@/components/charts';
 import { ReportList } from '@/components/rent-data/ReportList';
 import { Comparison, toComparisonRow } from '@/components/rent-data/Comparison';
 import { ListingGrid } from '@/components/listings/ListingCard';
-import { allAreaSlugs, nearbyLocalities, resolveArea } from '@/services/localities';
+import { prerenderAreaSlugs, nearbyLocalities, resolveArea } from '@/services/localities';
 import {
   distribution,
   getAreaStats,
@@ -31,7 +31,7 @@ import { formatRent, formatRentShort } from '@/lib/format';
 export const revalidate = 600;
 
 export async function generateStaticParams() {
-  const slugs = await allAreaSlugs();
+  const slugs = await prerenderAreaSlugs();
   return slugs.map((s) => ({ locality: s.slug }));
 }
 

@@ -46,6 +46,13 @@ export default async function ExplorePage({
   const withoutData = filtered.filter((s) => !s.stats);
   const zones = getZones();
 
+  const grouped = new Map<string, typeof withoutData>();
+  for (const s of withoutData) {
+    const zone = s.locality.zone ?? 'Chennai';
+    grouped.set(zone, [...(grouped.get(zone) ?? []), s]);
+  }
+  const byZone = [...grouped.entries()].sort((a, b) => b[1].length - a[1].length);
+
   return (
     <Container className="pt-8 lg:pt-14">
       <Eyebrow>Locality intelligence</Eyebrow>
@@ -113,16 +120,37 @@ export default async function ExplorePage({
         <section className="mt-14">
           <SectionHeader
             eyebrow="Waiting on data"
-            title="Localities that need reports"
+            title={`${withoutData.length} more Chennai localities`}
           >
             <p className="mt-3 max-w-xl text-sm text-muted">
-              We will not publish a median until enough renters have reported. If you live in one of
-              these, yours would make the difference.
+              We cover every locality in Chennai, but will not publish a median until enough renters
+              have reported. If you live in one of these, yours would make the difference.
             </p>
           </SectionHeader>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {withoutData.map((s) => (
-              <LocalityCard key={s.locality.id} summary={s} />
+
+          {/*
+            A card each would be hundreds of near-identical empty tiles. Grouped
+            chips stay scannable, and give every locality page an internal link.
+          */}
+          <div className="space-y-7">
+            {byZone.map(([zone, items]) => (
+              <div key={zone}>
+                <p className="eyebrow mb-3 text-faint">{zone}</p>
+                <div className="flex flex-wrap gap-2">
+                  {items.map((s) => (
+                    <Link
+                      key={s.locality.id}
+                      href={`/chennai/${s.locality.slug}`}
+                      className="rounded-pill border border-line bg-surface px-3.5 py-2 text-sm text-muted transition-colors hover:border-ink hover:text-ink"
+                    >
+                      {s.locality.name}
+                      {s.reports > 0 ? (
+                        <span className="ml-1.5 text-xs text-faint">{s.reports}</span>
+                      ) : null}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </section>

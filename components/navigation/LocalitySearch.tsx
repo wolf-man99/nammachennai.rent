@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Locality } from '@/types';
 import { BHK_SLUGS } from '@/lib/constants';
-import { parseSearch } from '@/lib/search-query';
+import { localityMatches, parseSearch } from '@/lib/search-query';
 import { track } from '@/lib/analytics';
 
 /**
@@ -46,6 +46,7 @@ export function LocalitySearch({
         else if (name.includes(q)) score = 60;
         else if (zone.startsWith(q)) score = 50;
         else if (zone.includes(q)) score = 35;
+        else if (localityMatches(l.name, l.zone, q)) score = 25; // spelling variant
         return { l, score: score - l.tier };
       })
       .filter((r) => r.score > 0)

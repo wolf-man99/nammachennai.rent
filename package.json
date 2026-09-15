@@ -8,10 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "seed": "tsx scripts/seed.ts",
-    "db:push": "tsx scripts/db-push.ts",
+    "seed": "node --env-file-if-exists=.env.local --import tsx scripts/seed.ts",
+    "db:push": "node --env-file-if-exists=.env.local --import tsx scripts/db-push.ts",
     "admin:hash": "tsx scripts/admin-hash.ts",
-    "scan:secrets": "tsx scripts/scan-secrets.ts"
+    "scan:secrets": "tsx scripts/scan-secrets.ts",
+    "localities:build": "node --env-file-if-exists=.env.local --import tsx scripts/build-localities.ts"
   },
   "dependencies": {
     "maplibre-gl": "^5.6.0",

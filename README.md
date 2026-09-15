@@ -134,7 +134,7 @@ lib/
   validation/        zod schemas shared by the API and the importer
   analytics/ geo.ts format.ts quality.ts rate-limit.ts admin-auth.ts
 services/            rent-stats, listings, matching, map, tolet, flatmates, admin
-data/localities.ts   Chennai reference data — add a locality in one line
+data/localities.ts   Chennai reference data — generated, 278 localities
 db/schema.sql        generated Postgres schema (edit lib/db/schema-sql.ts)
 ```
 
@@ -152,6 +152,27 @@ than code. Adding Hyderabad means adding rows, not branching the app. Chennai is
 the only active city.
 
 ---
+
+## Localities
+
+`data/localities.ts` is generated, not hand-written:
+
+```bash
+npm run localities:build   # Wikipedia categories + OpenStreetMap Nominatim
+npm run seed               # push them into the database
+```
+
+278 localities across 8 corridors. Names and coordinates come from public
+sources; anything that cannot be geolocated is dropped rather than guessed,
+because a wrong coordinate puts a map pin on the wrong street.
+
+Search folds the spelling variance common in Tamil place names, so "Velacheri"
+finds Velachery and "Iyappanthangal" finds Iyyappanthangal
+(`foldLocalityName` in `lib/search-query.ts`).
+
+Only corridors and tier 1–2 localities are prerendered; the rest render on
+demand. Prerendering all 278 would build over a thousand pages that mostly say
+"not enough renter data yet".
 
 ## Seeding
 

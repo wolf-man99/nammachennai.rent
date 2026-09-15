@@ -13,7 +13,7 @@ import {
 import { DistributionChart, TrendLine } from '@/components/charts';
 import { ReportList } from '@/components/rent-data/ReportList';
 import { ListingGrid } from '@/components/listings/ListingCard';
-import { allAreaSlugs, resolveArea } from '@/services/localities';
+import { prerenderAreaSlugs, resolveArea } from '@/services/localities';
 import { distribution, getAreaStats, getBhkStats, getTrendSeries } from '@/services/rent-stats';
 import { getListings } from '@/services/listings';
 import {
@@ -35,7 +35,7 @@ export const revalidate = 600;
  * still reachable, just rendered on demand and left out of the sitemap.
  */
 export async function generateStaticParams() {
-  const slugs = await allAreaSlugs();
+  const slugs = await prerenderAreaSlugs();
   return slugs.flatMap((s) =>
     (['1BHK', '2BHK', '3BHK'] as const).map((b) => ({ locality: s.slug, bhk: BHK_SLUGS[b] })),
   );

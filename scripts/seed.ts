@@ -65,7 +65,8 @@ async function readSeedFile(file: string): Promise<unknown[] | null> {
 }
 
 async function main() {
-  console.log(`Seeding ${db().driver === 'postgres' ? 'Postgres' : 'local file store'}…`);
+  const DRIVER_LABEL = { postgres: 'Postgres', rest: 'Supabase over REST', file: 'local file store' };
+  console.log(`Seeding ${DRIVER_LABEL[db().driver]}…`);
 
   if (db().driver === 'postgres') await db().migrate();
   const localities = await seedLocalities();
@@ -114,6 +115,18 @@ async function main() {
 
     if (rows.length) await db().insertMany(table, rows);
     console.log(`  ${file}: imported ${rows.length}${rejected ? `, rejected ${rejected}` : ''}`);
+  }
+
+  // Localities removed from the reference file linger in the database and would
+  // still appear in the app, so surface them rather than deleting blind: a
+  // locality may already carry submissions.
+  const stale = [...localities.values()].filter(
+    (l) => !CHENNAI_LOCALITIES.some((seed) => seed.slug === l.slug),
+  );
+  if (stale.length) {
+    console.warn(`\n  ${stale.length} locality row(s) no longer in data/localities.ts:`);
+    for (const l of stale) console.warn(`    ${l.name} (${l.slug})`);
+    console.warn('  Review before removing - they may already have rent submissions attached.');
   }
 
   console.log('Done.');
